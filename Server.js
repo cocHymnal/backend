@@ -1,8 +1,8 @@
 const express = require('express')
 const mongoose = require('mongoose')
 
-const profileRoutes = require('./routes/profileRoutes')
-const UserRoute = require('./routes/UsersRoutes')
+// const profileRoutes = require('./routes/profileRoutes')
+// const UserRoute = require('./routes/UsersRoutes')
 
 const cors = require('cors');
 
@@ -12,8 +12,8 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
-app.use('/api/users', UserRoute)
-app.use('/api/profile', profileRoutes)
+// app.use('/api/users', UserRoute)
+// app.use('/api/profile', profileRoutes)
 
 app.use('/', ((req, res)=>{
     res.send("Server is running successfully")
