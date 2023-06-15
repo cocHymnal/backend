@@ -1,9 +1,7 @@
 // const express = require('express')
 // // const mongoose = require('mongoose')
 
-// // const profileRoutes = require('./routes/profileRoutes')
-// // const UserRoute = require('./routes/UsersRoutes')
-// // const AdminRoutes = require("./routes/AdminRoute")
+
 
 // const cors = require('cors');
 
@@ -13,9 +11,7 @@
 // app.use(express.json())
 // app.use(cors())
 
-// // app.use('/api/users', UserRoute)
-// // app.use('/api/profile', profileRoutes)
-// // app.use('/api/admin', AdminRoutes)
+
 
 // app.get('/', ((req, res)=>{
 //     res.send("Server is running successfully")
@@ -38,8 +34,10 @@
 
 const express = require('express')
 const mongoose = require('mongoose')
-// const Users = require('./routes/Users')
-// const UserProfile = require('./routes/Profile')
+
+const profileRoutes = require('./routes/profileRoutes')
+const UserRoute = require('./routes/UsersRoutes')
+const AdminRoutes = require("./routes/AdminRoute")
 
 const cors = require('cors');
 
@@ -50,8 +48,8 @@ app.use(express.json())
 app.use(cors())
 
 // Routes Contollers
-// app.use('/api/users', Users)
-// app.use('/api/profile', UserProfile)
+app.use('/api/users', Users)
+app.use('/api/profile', UserProfile)
 
 
 mongoose.set('strictQuery', false);
