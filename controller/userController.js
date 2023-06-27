@@ -10,7 +10,6 @@ const createToken = ((_id)=>{
 })
 
 
-
 // Login controller
 const loginUser = (async (req, res)=>{
     const { email , password } = req.body
@@ -18,13 +17,13 @@ const loginUser = (async (req, res)=>{
     if(!email || !password){
         res.status(401).json({error : "All field is required"})
     }else{
-        res.status(200).json({msg : "sucessful"})
+        const exist = await User.findOne({ email })
 
-        // const exist = await User.findOne({ email })
+        if (!exist){
+            res.status(401).json({error :  "Email does not exist"})
+        }else{
+            res.status(200).json({msg : "sucessful"})
 
-        // if (!exist){
-        //     res.status(401).json({error :  "Email does not exist"})
-        // }else{
         //     const match = await bcrypt.compare(password,exist.password)
         //     if (!match){
         //         res.status(401).json({error : "Incorrect password"})
@@ -37,7 +36,7 @@ const loginUser = (async (req, res)=>{
         //            res.status(400).json({error : error.message})
         //        }
         //     }
-        // }
+        }
     }
 })
 
