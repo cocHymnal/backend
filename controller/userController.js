@@ -6,8 +6,8 @@ const jwt = require('jsonwebtoken')
 
 
 const createToken = ((_id)=>{
-   return  jwt.sign({_id}, hihhsggxtexHi7xvwuigx9i28hxgug9902tvxyw2b, { expiresIn: '3d' })
-})
+    return  jwt.sign({_id}, hihhsggxtexHi7xvwuigx9i28hxgug9902tvxyw2b, { expiresIn: '3d' })
+ })
 
 
 // Login controller
@@ -18,23 +18,22 @@ const loginUser = (async (req, res)=>{
         res.status(401).json({error : "All field is required"})
     }else{
         const exist = await User.findOne({ email })
+
         if (!exist){
             res.status(401).json({error :  "Email does not exist"})
         }else{
-            res.status(200).json({msg : "sucessful two"})
-
-        //     const match = await bcrypt.compare(password,exist.password)
-        //     if (!match){
-        //         res.status(401).json({error : "Incorrect password"})
-        //     }else{
-        //         try{
-        //            // create token
-        //            const Token = createToken(exist._id)
-        //            res.status(200).json({email, Token})
-        //        } catch (error){
-        //            res.status(400).json({error : error.message})
-        //        }
-        //     }
+            const match = await bcrypt.compare(password,exist.password)
+            if (!match){
+                res.status(401).json({error : "Incorrect password"})
+            }else{
+                try{
+                   // create token
+                   const Token = createToken(exist._id)
+                   res.status(200).json({email, Token})
+               } catch (error){
+                   res.status(400).json({error : error.message})
+               }
+            }
         }
     }
 })
