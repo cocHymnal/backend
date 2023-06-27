@@ -18,24 +18,26 @@ const loginUser = (async (req, res)=>{
     if(!email || !password){
         res.status(401).json({error : "All field is required"})
     }else{
-        const exist = await User.findOne({ email })
+        res.status(200).json({msg : "sucessful"})
 
-        if (!exist){
-            res.status(401).json({error :  "Email does not exist"})
-        }else{
-            const match = await bcrypt.compare(password,exist.password)
-            if (!match){
-                res.status(401).json({error : "Incorrect password"})
-            }else{
-                try{
-                   // create token
-                   const Token = createToken(exist._id)
-                   res.status(200).json({email, Token})
-               } catch (error){
-                   res.status(400).json({error : error.message})
-               }
-            }
-        }
+        // const exist = await User.findOne({ email })
+
+        // if (!exist){
+        //     res.status(401).json({error :  "Email does not exist"})
+        // }else{
+        //     const match = await bcrypt.compare(password,exist.password)
+        //     if (!match){
+        //         res.status(401).json({error : "Incorrect password"})
+        //     }else{
+        //         try{
+        //            // create token
+        //            const Token = createToken(exist._id)
+        //            res.status(200).json({email, Token})
+        //        } catch (error){
+        //            res.status(400).json({error : error.message})
+        //        }
+        //     }
+        // }
     }
 })
 
