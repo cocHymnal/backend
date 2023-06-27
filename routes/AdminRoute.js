@@ -6,6 +6,6 @@ const { approveApp, ad  } = require('../controller/adminControllers')
 
 // Sign Up route
 router.post('/approve-purchase', approveApp )
-router.get('/ad', ad )
+router.post('/ad', ad )
 
 module.exports = router

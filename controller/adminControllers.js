@@ -21,7 +21,8 @@ const approveApp = (async (req, res)=>{
  })
 
  const ad = (async (req, res)=>{
-   res.json({result: "success"})
+   const { email , password } = req.body
+   res.json({result: {email, password}})
  })
  
  module.exports = { approveApp, ad }
