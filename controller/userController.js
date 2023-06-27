@@ -10,6 +10,7 @@ const createToken = ((_id)=>{
 })
 
 
+
 // Login controller
 const loginUser = (async (req, res)=>{
     const { email , password } = req.body
