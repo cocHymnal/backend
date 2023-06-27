@@ -18,11 +18,10 @@ const loginUser = (async (req, res)=>{
         res.status(401).json({error : "All field is required"})
     }else{
         const exist = await User.findOne({ email })
-
         if (!exist){
             res.status(401).json({error :  "Email does not exist"})
         }else{
-            res.status(200).json({msg : "sucessful"})
+            res.status(200).json({msg : "sucessful two"})
 
         //     const match = await bcrypt.compare(password,exist.password)
         //     if (!match){
