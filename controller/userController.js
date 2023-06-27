@@ -50,7 +50,7 @@ const SigninUser = (async (req, res)=>{
             res.status(401).json({error :  "Email is not valid"})
         } else{
             if(!validator.isStrongPassword(password)){
-                res.status(401).json({error :  "Passoword is not strong"})
+                res.status(401).json({error :  "Password is not strong"})
             }else{
                 const Emailexist = await User.findOne({ email })
                 if (Emailexist){
