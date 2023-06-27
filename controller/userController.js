@@ -4,10 +4,11 @@ const bcrypt = require("bcryptjs");
 const validator = require('validator')
 const jwt = require('jsonwebtoken')
 
+let SECRET="hihhsggxtexHi7xvwuigx9i28hxgug9902tvxyw2b"
 
 const createToken = ((_id)=>{
-    return  jwt.sign({_id}, hihhsggxtexHi7xvwuigx9i28hxgug9902tvxyw2b, { expiresIn: '3d' })
- })
+   return  jwt.sign({_id}, SECRET, { expiresIn: '3d' })
+})
 
 
 // Login controller
