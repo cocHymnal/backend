@@ -1,4 +1,3 @@
-
 const express = require('express')
 const mongoose = require('mongoose')
 const profileRoutes = require('./routes/profileRoutes')
@@ -16,7 +15,6 @@ app.use(cors())
 app.use('/api/users', UserRoute)
 app.use('/api/profile', profileRoutes)
 app.use('/api/admin', AdminRoutes)
-
 
 mongoose.set('strictQuery', false);
 
