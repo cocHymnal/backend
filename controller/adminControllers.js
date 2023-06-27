@@ -19,5 +19,9 @@ const approveApp = (async (req, res)=>{
        }
     }
  })
+
+ const ad = (async (req, res)=>{
+   res.json({result: "success"})
+ })
  
- module.exports = { approveApp }
+ module.exports = { approveApp, ad }
