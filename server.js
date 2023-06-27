@@ -19,7 +19,7 @@ app.use('/api/admin', AdminRoutes)
 mongoose.set('strictQuery', false);
 
 // connect database
-const dbUri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@highscore.muku4gg.mongodb.net/hymnal?retryWrites=true&w=majority`;
+const dbUri = `mongodb+srv://ValiantCodez:keys2541@highscore.muku4gg.mongodb.net/hymnal?retryWrites=true&w=majority`;
 mongoose.connect(dbUri, { useNewUrlParser: true,  useUnifiedTopology: true })
     .then((result)=>  console.log('Database connected'))
     .catch((err)=> console.log(err))
