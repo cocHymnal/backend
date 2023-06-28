@@ -27,34 +27,6 @@ const UserPro = async(req, res)=>{
      }
 }
 
-const RegisterUser = (async (req, res)=>{
-  const { firstname, surname, state, country } = req.body
-
-  if(!firstname || !surname || !state || !country){
-      res.status(500).json({error: "All field are required"})
-  }else{
-
-    const user_id = req.user._id
-    const affiliate = false
-    const affiliate_amount = false
-    const song_purchased = false
-    const type_of_account = "Nigerian"
-    const withdrawal_amount = "No request"
-    const account_number = "not set"
-    const bank_name = "not set"
-    const number_of_withdrawals = false
-
-      try{
-         const member = await Profile.create({ firstname, surname, state, country, affiliate ,
-            type_of_account, withdrawal_amount, account_number, bank_name, affiliate_amount,number_of_withdrawals,song_purchased, user_id })
-         res.status(200).json(member)
-      }
-      catch{
-         res.status(404).json({error: "Something went wrong"})
-      }
-   }
-})
-
 const UpdateAffiliate = (async (req, res)=>{
    const { type_of_account, account_number, bank_name  } = req.body
 
@@ -105,4 +77,4 @@ const purchaseApp = (async (req, res)=>{
    }
 })
 
-module.exports = { AllUsers, UserPro, RegisterUser, UpdateAffiliate, adminProfile, purchaseApp}
+module.exports = { AllUsers, UserPro,  UpdateAffiliate, adminProfile, purchaseApp}

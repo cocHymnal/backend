@@ -2,13 +2,13 @@ const User = require('../model/UserModel')
 const Profile = require('../model/profileModel')
 const bcrypt = require("bcryptjs");
 const validator = require('validator')
-const jwt = require('jsonwebtoken')
+// const jwt = require('jsonwebtoken')?
 
-let SECRET="hihhsggxtexHi7xvwuigx9i28hxgug9902tvxyw2b"
+// let SECRET="hihhsggxtexHi7xvwuigx9i28hxgug9902tvxyw2b"
 
-const createToken = ((_id)=>{
-   return  jwt.sign({_id}, SECRET, { expiresIn: '3d' })
-})
+// const createToken = ((_id)=>{
+//    return  jwt.sign({_id}, SECRET, { expiresIn: '3d' })
+// })
 
 
 // Login controller
@@ -28,9 +28,10 @@ const loginUser = (async (req, res)=>{
                 res.status(401).json({error : "Incorrect password"})
             }else{
                 try{
+                    const myProfile = await Profile.findOne({ user_id:exist._id  })
                    // create token
-                   const Token = createToken(exist._id)
-                   res.status(200).json({email, Token})
+                //    const Token = createToken(exist._id)
+                   res.status(200).json({email, myProfile})
                } catch (error){
                    res.status(400).json({error : error.message})
                }
@@ -61,8 +62,8 @@ const SigninUser = (async (req, res)=>{
                     try{
                         const user = await User.create({ email , password : hash })
                         // create token
-                        const Token = createToken(user._id)
-                        res.status(200).json({email, Token})
+                        // const Token = createToken(user._id)
+                        res.status(200).json({user})
                     } catch (error){
                         res.status(400).json({error : error.message})
                     }
@@ -72,4 +73,32 @@ const SigninUser = (async (req, res)=>{
     }
 })
 
-module.exports = { loginUser, SigninUser }
+const RegisterUser = (async (req, res)=>{
+    const {user_id, firstname, surname, state, country } = req.body
+  
+    if(!user_id || !firstname || !surname || !state || !country){
+        res.status(500).json({error: "All field are required"})
+    }else{
+  
+      const affiliate = false
+      const affiliate_amount = false
+      const song_purchased = false
+      const type_of_account = "Nigerian"
+      const withdrawal_amount = "No request"
+      const account_number = "not set"
+      const bank_name = "not set"
+      const number_of_withdrawals = false
+  
+        try{
+           const member = await Profile.create({ firstname, surname, state, country, affiliate ,
+              type_of_account, withdrawal_amount, account_number, bank_name, affiliate_amount,number_of_withdrawals,song_purchased, user_id })
+           res.status(200).json(member)
+        }
+        catch{
+           res.status(404).json({error: "Something went wrong"})
+        }
+     }
+  })
+  
+
+module.exports = { loginUser, RegisterUser, SigninUser }

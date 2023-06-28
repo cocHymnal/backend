@@ -1,13 +1,12 @@
 const express = require('express')
 const router = express.Router()
 
-const { RegisterUser, UserPro, AllUsers, UpdateAffiliate, adminProfile, purchaseApp} = require("../controller/profileController")
+const {  UserPro, AllUsers, UpdateAffiliate, adminProfile, purchaseApp} = require("../controller/profileController")
 const requireAuth = require('../middleware/requireAuth')
 
 // require auth for all route
 router.use(requireAuth)
 
-router.post('/register', RegisterUser)
 router.post('/update-affiliate', UpdateAffiliate)
 router.get('/all-profile', AllUsers)
 router.get('/admin-profile', adminProfile)
