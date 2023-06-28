@@ -83,7 +83,7 @@ const RegisterUser = (async (req, res)=>{
       const affiliate = false
       const affiliate_amount = 0
       const song_purchased = false
-      const type_of_account = null
+      const type_of_account = false
       const withdrawal_amount = "No request"
       const account_number = "not set"
       const bank_name = "not set"
