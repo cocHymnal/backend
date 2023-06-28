@@ -27,28 +27,6 @@ const UserPro = async(req, res)=>{
      }
 }
 
-const UpdateAffiliate = (async (req, res)=>{
-   const { type_of_account, account_number, bank_name  } = req.body
-
-   const user_id = req.user._id
-   const number_of_withdrawals = 0
-
-   if(!user_id){
-      res.status(404).json({error:"User does not exit"})
-   }else if(!type_of_account || !account_number || !bank_name){
-      res.status(500).json({error: "All field must not be empty"})
-   }else{
-      try{
-         await  Profile.updateOne({user_id },{ type_of_account, number_of_withdrawals,account_number, bank_name });
-
-         const userResult = await Profile.findOne({user_id})
-         res.status(200).json(userResult)
-      }
-      catch(err){
-         res.status(500).json(err)
-      }
-   }
-})
 
 const adminProfile = (async (req, res)=>{
    let account_name = "Etim Effiong Usangha"

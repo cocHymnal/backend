@@ -79,11 +79,11 @@ const RegisterUser = (async (req, res)=>{
     if(!user_id || !firstname || !surname || !state || !country || !phone){
         res.status(500).json({error: "All field are required"})
     }else{
-  
+
       const affiliate = false
-      const affiliate_amount = false
+      const affiliate_amount = 0
       const song_purchased = false
-      const type_of_account = "Nigerian"
+      const type_of_account = null
       const withdrawal_amount = "No request"
       const account_number = "not set"
       const bank_name = "not set"
@@ -101,5 +101,33 @@ const RegisterUser = (async (req, res)=>{
      }
   })
   
+  const UpdateAffiliate = (async (req, res)=>{
+    let {user_id , type_of_account, account_number, bank_name  } = req.body
+ 
+    const number_of_withdrawals = 0
+    const affiliate = true
+    if(!user_id){
+       res.status(404).json({error:"User does not exit"})
+    }else if( !account_number || !bank_name){
+       res.status(500).json({error: "All field must not be empty"})
+    }else{
+        if(type_of_account === true){
+            type_of_account = "naira"
+        }else{
+            type_of_account = "dollar"
+        }
 
-module.exports = { loginUser, RegisterUser, SigninUser }
+       try{
+          await  Profile.updateOne({user_id },{ type_of_account, number_of_withdrawals,account_number, affiliate, bank_name });
+ 
+          const userResult = await Profile.findOne({user_id})
+          res.status(200).json(userResult)
+       }
+       catch(err){
+          res.status(500).json(err)
+       }
+    }
+ })
+ 
+
+module.exports = { loginUser, RegisterUser, SigninUser, UpdateAffiliate }
