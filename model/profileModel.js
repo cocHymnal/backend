@@ -42,7 +42,19 @@ const Profileschema = new schema({
         type: String,
         required: true
     },
+    phone: {
+        type: String,
+        required: true
+    },
     account_number: {
+        type: String,
+        required: true
+    },
+    dollar: {
+        type: String,
+        required: true
+    },
+    naira: {
         type: String,
         required: true
     },
