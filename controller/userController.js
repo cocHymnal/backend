@@ -91,9 +91,14 @@ const RegisterUser = (async (req, res)=>{
       const naira = 0
       const dollar = 0
         try{
-           const member = await Profile.create({ firstname, surname, state, country, affiliate, phone , dollar, naira,
-              type_of_account, withdrawal_amount, account_number, bank_name, affiliate_amount,number_of_withdrawals,song_purchased, user_id })
-           res.status(200).json(member)
+            const user = await User.findOne({ _id: user_id })
+
+            const email = user.email
+
+           const myProfile = await Profile.create({ firstname, surname, state, country, affiliate, phone , dollar, naira,
+            type_of_account, withdrawal_amount, account_number, bank_name, affiliate_amount,number_of_withdrawals,song_purchased, user_id })
+
+           res.status(200).json({email, myProfile})
         }
         catch(error){
            res.status(404).json({error:error.message})
@@ -116,7 +121,6 @@ const RegisterUser = (async (req, res)=>{
         }else{
             type_of_account = "dollar"
         }
-
        try{
           await  Profile.updateOne({user_id },{ type_of_account, number_of_withdrawals,account_number, affiliate, bank_name });
  
