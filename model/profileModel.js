@@ -61,10 +61,6 @@ const Profileschema = new schema({
     bank_name: {
         type: String,
         required: true
-    },
-    user_id: {
-        type: String,
-        required: true
     }
 }, { timestamp : true})
 

@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.4.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
@@ -20,6 +21,8 @@
     "mongoose": "^7.2.4",
     "nodemailer": "^6.9.3",
     "nodemon": "^2.0.22",
+    "textflow.js": "^0.1.4",
+    "twilio": "^4.13.0",
     "validator": "^13.9.0"
   }
 }
