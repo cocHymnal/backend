@@ -2,10 +2,16 @@ const express = require('express')
 const router = express.Router()
 
 // Users controller
-const {  RegisterUser, UpdateAffiliate , VerifyPhone, ConfirmPhone } = require('../controller/userController')
+const {  RegisterUser, UpdateAffiliate, VerifyPhone, ConfirmPhone, SigninUser, loginUser } = require('../controller/userController')
 
 // Sign Up route
 router.post('/verify-phone', VerifyPhone )
+
+// Sign Up route
+router.post('/login', loginUser )
+
+// Sign Up route
+router.post('/signup', SigninUser )
 
 // Sign Up route
 router.post('/confirm-phone', ConfirmPhone )

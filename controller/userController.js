@@ -1,11 +1,14 @@
 const User = require('../model/UserModel')
 const Profile = require('../model/profileModel')
 const axios = require('axios');
+const bcrypt = require("bcryptjs")
+const validator = require("validator")
 
 /* The key from one of your Verification Apps, found here https://dashboard.sinch.com/verification/apps*/
     const APPLICATION_KEY = "b9590528-14c5-4a83-94dd-f1e8391aa5d2";
 
     /* The secret from the Verification App that uses the key above, found here https://dashboard.sinch.com/verification/apps*/
+    
     const APPLICATION_SECRET = "NOfPAKQchECKqKvglz0EAA==";
 
 const VerifyPhone = (async(req,res)=>{
@@ -152,5 +155,63 @@ const RegisterUser = (async (req, res)=>{
     }
  })
  
+ 
+// Login controller
+const loginUser = (async (req, res)=>{
+    const { email , password } = req.body
+  
+    if(!email || !password){
+        res.status(401).json({error : "All field is required"})
+    }else{
+        
+        const exist = await User.findOne({ email })
 
-module.exports = { RegisterUser, UpdateAffiliate, VerifyPhone, ConfirmPhone }
+        if (!exist){
+            res.status(401).json({error :  "Incorrect Username"})
+        }else{
+            const match = await bcrypt.compare(password,exist.password)
+            if (!match){
+                res.status(401).json({error : "Incorrect password"})
+            }else{
+                try{
+                   // create token
+                   res.status(200).json({email})
+               } catch (error){
+                   res.status(400).json({error : error.message})
+               }
+            }
+        }
+    }
+})
+
+
+// Signup controller
+const SigninUser = (async (req, res)=>{
+    const { email , password } = req.body
+    if(!email || !password){
+        res.status(401).json({error : "All field is required"})
+    }else{
+        if(!validator.isEmail(email)){
+            res.status(401).json({error :  "Email is not valid"})
+        } else{
+            if(!validator.isStrongPassword(password)){
+                res.status(401).json({error :  "Passoword is not strong"})
+            }else{
+                const Emailexist = await User.findOne({ email })
+                if (Emailexist){
+                    res.status(401).json({error :  "Email already exist"})
+                }else{
+                    try{
+                        res.status(200).json({email, password})
+                    }
+                    catch{
+                        res.status(500).json({error: "Something went wrong"})
+                    }
+                }
+            }  
+        }
+    }
+})
+ 
+
+module.exports = { RegisterUser, UpdateAffiliate, VerifyPhone, ConfirmPhone, SigninUser, loginUser }
