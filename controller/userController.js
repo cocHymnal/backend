@@ -5,11 +5,11 @@ const bcrypt = require("bcryptjs")
 const validator = require("validator")
 
 /* The key from one of your Verification Apps, found here https://dashboard.sinch.com/verification/apps*/
-    const APPLICATION_KEY = "b9590528-14c5-4a83-94dd-f1e8391aa5d2";
+const APPLICATION_KEY = "b9590528-14c5-4a83-94dd-f1e8391aa5d2";
 
-    /* The secret from the Verification App that uses the key above, found here https://dashboard.sinch.com/verification/apps*/
-    
-    const APPLICATION_SECRET = "NOfPAKQchECKqKvglz0EAA==";
+/* The secret from the Verification App that uses the key above, found here https://dashboard.sinch.com/verification/apps*/
+
+const APPLICATION_SECRET = "NOfPAKQchECKqKvglz0EAA==";
 
 const VerifyPhone = (async(req,res)=>{
     const { phone } = req.body
@@ -94,7 +94,7 @@ const ConfirmPhone = (async(req, res)=>{
 })
 
 const RegisterUser = (async (req, res)=>{
-    const {firstname, surname, state, country, phone } = req.body
+    const {firstname, surname,email,  state, country, phone } = req.body
 
     const affiliate = false
     const affiliate_amount = 0
@@ -116,7 +116,7 @@ const RegisterUser = (async (req, res)=>{
         }else{
             try{
                 let result = await Profile.create({ 
-                    firstname, surname, state, country, phone,
+                    firstname, surname, email, state, country, phone,
                     affiliate, affiliate_amount, song_purchased, type_of_account, withdrawal_amount, account_number, bank_name, naira, dollar, number_of_withdrawals
                  })
                  res.status(200).json(result)
@@ -174,8 +174,9 @@ const loginUser = (async (req, res)=>{
                 res.status(401).json({error : "Incorrect password"})
             }else{
                 try{
+                   const profile =  await Profile.findOne({ email })
                    // create token
-                   res.status(200).json({email})
+                   res.status(200).json(profile)
                } catch (error){
                    res.status(400).json({error : error.message})
                }
@@ -201,8 +202,11 @@ const SigninUser = (async (req, res)=>{
                 if (Emailexist){
                     res.status(401).json({error :  "Email already exist"})
                 }else{
+                    const salt = await bcrypt.genSalt(10)
+                    const hash = await bcrypt.hash(password, salt)
                     try{
-                        res.status(200).json({email, password})
+                        const user = await User.create({ email , password : hash })
+                        res.status(200).json(user)
                     }
                     catch{
                         res.status(500).json({error: "Something went wrong"})

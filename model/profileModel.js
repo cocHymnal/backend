@@ -18,6 +18,10 @@ const Profileschema = new schema({
         type: String,
         required: true
     },
+    email: {
+        type: String,
+        required: true
+    },
     affiliate: {
         type: String,
         required: true
