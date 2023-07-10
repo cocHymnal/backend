@@ -1,20 +1,19 @@
-// // "use strict";
 const nodemailer = require("nodemailer");
 
-const contact = function(email, message){
-    var transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: "cochymnal@gmail.com",
-            pass: "mnxoexbwlzoowafk"
-        }
-    });
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: "cochymnal@gmail.com",
+        pass: "mnxoexbwlzoowafk"
+    }
+});
+
+const contact = function(email, e){
         var mailOptions = {
             from: 'cochymnal@gmail.com',
             to: email, 
-            subject: "Hi Valiant From cocHymal",
-            html: `<h1> ${message} </h1><br>
-            `
+            subject: "cocHymal one-time password",
+            html: ` <p>Your one-time password is <span style="padding:6px; fontweight:bold; background:grey; fontsize: 14px; color: white;" >${e}</span> , This password was expire within 2mins</p>`
         }
         transporter.sendMail(mailOptions, function(error, info){
             if (error) {
@@ -24,6 +23,5 @@ const contact = function(email, message){
             }
     });
 }
-
 
 module.exports  = { contact }

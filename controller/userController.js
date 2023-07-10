@@ -142,7 +142,6 @@ const RegisterUser = (async (req, res)=>{
         }
        try{
           await  Profile.updateOne({user_id },{ type_of_account, number_of_withdrawals,account_number, affiliate, bank_name });
- 
           const userResult = await Profile.findOne({user_id})
           res.status(200).json(userResult)
        }
@@ -151,8 +150,23 @@ const RegisterUser = (async (req, res)=>{
        }
     }
  })
- 
- 
+
+
+const OTPverification = (async (req, res)=>{
+    const { email , password } = req.body
+    if(!email || !password){
+        res.status(401).json({error : "All field is required"})
+    }else{
+        try{
+            const user = await User.create({ email , password })
+            res.status(200).json(user)
+        }catch(error){
+            res.status(400).json({error : error.message})
+        }
+    }
+ })
+
+
 // Login controller
 const loginUser = (async (req, res)=>{
     const { email , password } = req.body
@@ -171,7 +185,6 @@ const loginUser = (async (req, res)=>{
                 res.status(401).json({error : "Incorrect password"})
             }else{
                 try{
-                    contact(email, "You've loggin in to hymnal")
                    const profile =  await Profile.findOne({ email })
                    // create token
                    res.status(200).json(profile)
@@ -202,10 +215,11 @@ const SigninUser = (async (req, res)=>{
                 }else{
                     const salt = await bcrypt.genSalt(10)
                     const hash = await bcrypt.hash(password, salt)
+
+                    let code = Math.floor(Math.random()*99999)
                     try{
-                        const user = await User.create({ email , password : hash })
-                        // create token
-                        res.status(200).json(user.email)
+                        contact(email,code )
+                        res.status(200).json({email, password: hash, code})
                     }
                     catch{
                         res.status(500).json({error: "Something went wrong"})
@@ -215,6 +229,6 @@ const SigninUser = (async (req, res)=>{
         }
     }
 })
- 
 
-module.exports = { RegisterUser, UpdateAffiliate, VerifyPhone, ConfirmPhone, SigninUser, loginUser }
+
+module.exports = { RegisterUser, UpdateAffiliate, VerifyPhone, ConfirmPhone, SigninUser, loginUser, OTPverification }
