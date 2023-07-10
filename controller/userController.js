@@ -107,7 +107,7 @@ const RegisterUser = (async (req, res)=>{
     const naira = 0
     const dollar = 0
   
-    if( !firstname || !surname || !state || !country || !phone){
+    if( !firstname || !surname || !state || !country || !phone || !email){
         res.status(500).json({error: "All field are required"})
     }else{
         try{
