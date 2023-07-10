@@ -206,10 +206,8 @@ const SigninUser = (async (req, res)=>{
                     const hash = await bcrypt.hash(password, salt)
                     try{
                         const user = await User.create({ email , password : hash })
-
-                        const profile =  await Profile.findOne({ email })
                         // create token
-                        res.status(200).json(profile)
+                        res.status(200).json(user.email)
                     }
                     catch{
                         res.status(500).json({error: "Something went wrong"})
