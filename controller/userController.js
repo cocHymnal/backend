@@ -110,20 +110,15 @@ const RegisterUser = (async (req, res)=>{
     if( !firstname || !surname || !state || !country || !phone){
         res.status(500).json({error: "All field are required"})
     }else{
-       const phoneExist = await Profile.findOne({ phone })
-        if(phoneExist){
-            res.status(500).json({error: "You already have an account"})
-        }else{
-            try{
-                let result = await Profile.create({ 
-                    firstname, surname, email, state, country, phone,
-                    affiliate, affiliate_amount, song_purchased, type_of_account, withdrawal_amount, account_number, bank_name, naira, dollar, number_of_withdrawals
-                 })
-                 res.status(200).json(result)
-            }
-            catch(e){
-                res.status(404).json({error: `error ${e}`})
-            }
+        try{
+            let result = await Profile.create({ 
+                firstname, surname, email, state, country, phone,
+                affiliate, affiliate_amount, song_purchased, type_of_account, withdrawal_amount, account_number, bank_name, naira, dollar, number_of_withdrawals
+                })
+                res.status(200).json(result)
+        }
+        catch(e){
+            res.status(404).json({error: `error ${e}`})
         }
      }
   })
