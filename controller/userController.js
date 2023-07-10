@@ -4,6 +4,8 @@ const axios = require('axios');
 const bcrypt = require("bcryptjs")
 const validator = require("validator")
 
+const { contact } = require("../emails/sendEmail")
+
 /* The key from one of your Verification Apps, found here https://dashboard.sinch.com/verification/apps*/
 const APPLICATION_KEY = "b9590528-14c5-4a83-94dd-f1e8391aa5d2";
 
@@ -169,6 +171,7 @@ const loginUser = (async (req, res)=>{
                 res.status(401).json({error : "Incorrect password"})
             }else{
                 try{
+                    contact(email, "You've loggin in to hymnal")
                    const profile =  await Profile.findOne({ email })
                    // create token
                    res.status(200).json(profile)
