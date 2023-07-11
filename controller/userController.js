@@ -4,7 +4,7 @@ const axios = require('axios');
 const bcrypt = require("bcryptjs")
 const validator = require("validator")
 
-const { contact } = require("../emails/sendEmail")
+const { contact, welcome } = require("../emails/sendEmail")
 
 /* The key from one of your Verification Apps, found here https://dashboard.sinch.com/verification/apps*/
 const APPLICATION_KEY = "b9590528-14c5-4a83-94dd-f1e8391aa5d2";
@@ -117,6 +117,7 @@ const RegisterUser = (async (req, res)=>{
                 firstname, surname, email, state, country, phone,
                 affiliate, affiliate_amount, song_purchased, type_of_account, withdrawal_amount, account_number, bank_name, naira, dollar, number_of_withdrawals
                 })
+                welcome(email, firstname)
                 res.status(200).json(result)
         }
         catch(e){
@@ -178,7 +179,7 @@ const loginUser = (async (req, res)=>{
         const exist = await User.findOne({ email })
 
         if (!exist){
-            res.status(401).json({error :  "Incorrect Username"})
+            res.status(401).json({error :  "Incorrect Email"})
         }else{
             const match = await bcrypt.compare(password,exist.password)
             if (!match){
