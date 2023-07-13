@@ -112,28 +112,31 @@ const RegisterUser = (async (req, res)=>{
     if( !firstname || !surname || !state || !country || !phone || !email){
         res.status(500).json({error: "All field are required"})
     }else{
-        try{
-            let result = await Profile.create({ 
-                firstname, surname, email, state, country, phone,
-                affiliate, affiliate_amount, song_purchased, type_of_account, withdrawal_amount, account_number, bank_name, naira, dollar, number_of_withdrawals
-                })
-                welcome(email, firstname)
-                res.status(200).json(result)
-        }
-        catch(e){
-            res.status(404).json({error: `error ${e}`})
+        const exist = await User.findOne({ email })
+        if(!exist){
+            res.status(500).json({error: "You do not have an account"})
+        }else{
+            try{
+                let result = await Profile.create({ 
+                    firstname, surname, email, state, country, phone,
+                    affiliate, affiliate_amount, song_purchased, type_of_account, withdrawal_amount, account_number, bank_name, naira, dollar, number_of_withdrawals
+                    })
+                    welcome(email, firstname)
+                    res.status(200).json(result)
+            }
+            catch(e){
+                res.status(404).json({error: `error ${e}`})
+            }
         }
      }
   })
-  
+
   const UpdateAffiliate = (async (req, res)=>{
-    let {user_id , type_of_account, account_number, bank_name  } = req.body
+    let {email , type_of_account, account_number, bank_name  } = req.body
  
     const number_of_withdrawals = 0
     const affiliate = true
-    if(!user_id){
-       res.status(404).json({error:"User does not exit"})
-    }else if( !account_number || !bank_name){
+   if( !account_number || !bank_name){
        res.status(500).json({error: "All field must not be empty"})
     }else{
         if(type_of_account === true){
@@ -141,14 +144,19 @@ const RegisterUser = (async (req, res)=>{
         }else{
             type_of_account = "dollar"
         }
-       try{
-          await  Profile.updateOne({user_id },{ type_of_account, number_of_withdrawals,account_number, affiliate, bank_name });
-          const userResult = await Profile.findOne({user_id})
-          res.status(200).json(userResult)
-       }
-       catch(err){
-          res.status(500).json(err)
-       }
+        const exist = await User.findOne({ email })
+        if(!exist){
+            res.status(500).json({error: "You do not have an account"})
+        }else{
+            try{
+                await  Profile.updateOne({email },{ type_of_account, number_of_withdrawals,account_number, affiliate, bank_name });
+                const userResult = await Profile.findOne({email})
+                res.status(200).json(userResult)
+             }
+             catch(err){
+                res.status(500).json(err)
+             }
+        }
     }
  })
 
@@ -158,8 +166,11 @@ const OTPverification = (async (req, res)=>{
     if(!email || !password){
         res.status(401).json({error : "All field is required"})
     }else{
+        const salt = await bcrypt.genSalt(10)
+        const hash = await bcrypt.hash(password, salt)
         try{
-            const user = await User.create({ email , password })
+
+            const user = await User.create({ email , password: hash })
             res.status(200).json(user)
         }catch(error){
             res.status(400).json({error : error.message})
@@ -179,7 +190,7 @@ const loginUser = (async (req, res)=>{
         const exist = await User.findOne({ email })
 
         if (!exist){
-            res.status(401).json({error :  "Incorrect Email"})
+            res.status(401).json({error :  "Email doesn't exist"})
         }else{
             const match = await bcrypt.compare(password,exist.password)
             if (!match){
